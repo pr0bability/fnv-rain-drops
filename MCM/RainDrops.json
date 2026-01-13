@@ -1,0 +1,260 @@
+{
+	"modName": "RainDrops",
+	"displayName": "$modDisplayName",
+	"description": "$modDescription",
+	"saveFile": "../NVSE/Plugins/RainDrops.ini",
+	"minMCMVersion": 1.00,
+	"minModVersion": 1.00,
+	"requirements": [
+		{ "type": "dll", "file": "Rain Drops", "version": 100 }
+	],
+	"submenus": {
+		"0": {
+			"listTitle": "$modDisplayName",
+			"pageTitle": "$modDisplayName",
+			"active": 1,
+			"columns": 2,
+			"enable": 1,
+			"options": {
+				"1": {
+					"title": "$Rain",
+					"enable": 1,
+					"type": 0
+				},
+				"3": {
+					"title": "$Enable",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$EnableMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnabled", "configINI": "Rain:bEnabled", "default": 1 } ]
+				},
+				"5": {
+					"title": "$1stPersonOnly",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$1stPersonOnlyMouse",
+					"vars": [ { "gameSetting": "bISRainDrops1stPersonOnly", "configINI": "Rain:b1stPersonOnly", "default": 1 } ]
+				},
+				"7": {
+					"title": "$Density",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$DensityMouse",
+					"vars": [ { "gameSetting": "fISRainDropsDensity", "configINI": "Rain:fDensity", "default": 0.5 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1
+					}
+				},
+				"9": {
+					"title": "$Size",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$SizeMouse",
+					"vars": [ { "gameSetting": "fISRainDropsSize", "configINI": "Rain:fSize", "default": 1 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1.25
+					}
+				},
+				"11": {
+					"title": "$DropsStatic",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$DropsStaticMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnableStaticDrops", "configINI": "Rain:bEnableStaticDrops", "default": 1 } ]
+				},
+				"13": {
+					"title": "$DropsMoving",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$DropsMovingMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnableMovingDrops", "configINI": "Rain:bEnableMovingDrops", "default": 1 } ]
+				},
+				"15": {
+					"title": "$Fogging",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FoggingMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnableFogging", "configINI": "Rain:bEnableFogging", "default": 1 } ]
+				},
+				"17": {
+					"title": "$FogBlur",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FogBlurMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnableFogBlurring", "configINI": "Rain:bEnableFogBlurring", "default": 1 } ]
+				},
+				"19": {
+					"title": "$FogTrails",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FogTrailsMouse",
+					"vars": [ { "gameSetting": "bISRainDropsEnableFogTrails", "configINI": "Rain:bEnableFogTrails", "default": 1 } ]
+				},
+				"21": {
+					"title": "$FogColorInfluence",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$FogColorInfluenceMouse",
+					"vars": [ { "gameSetting": "fISRainDropsFogColorInfluence", "configINI": "Rain:fFogColorInfluence", "default": 0.1 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1
+					}
+				},
+				"23": {
+					"title": "$FadeIn",
+					"type": 2,
+					"enable": 1,
+					"mouse": "$FadeInMouse",
+					"vars": [ { "gameSetting": "fISRainDropsFadeIn", "configINI": "Rain:fFadeIn", "default": 30.0 } ],
+					"scale": {
+						"valueDecimal": 0,
+						"valueIncrement": 1,
+						"valueMin": 0,
+						"valueMax": 120
+					}
+				},
+				"25": {
+					"title": "$FadeOut",
+					"type": 2,
+					"enable": 1,
+					"mouse": "$FadeOutMouse",
+					"vars": [ { "gameSetting": "fISRainDropsFadeOut", "configINI": "Rain:fFadeOut", "default": 5.0 } ],
+					"scale": {
+						"valueDecimal": 0,
+						"valueIncrement": 1,
+						"valueMin": 0,
+						"valueMax": 120
+					}
+				},
+				"2": {
+					"title": "$Snow",
+					"enable": 1,
+					"type": 0
+				},
+				"4": {
+					"title": "$Enable",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$EnableMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnabled", "configINI": "Snow:bEnabled", "default": 1 } ]
+				},
+				"6": {
+					"title": "$1stPersonOnly",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$1stPersonOnlyMouse",
+					"vars": [ { "gameSetting": "bISSnowDrops1stPersonOnly", "configINI": "Snow:b1stPersonOnly", "default": 1 } ]
+				},
+				"8": {
+					"title": "$Density",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$DensityMouse",
+					"vars": [ { "gameSetting": "fISSnowDropsDensity", "configINI": "Snow:fDensity", "default": 0.25 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1
+					}
+				},
+				"10": {
+					"title": "$Size",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$SizeMouse",
+					"vars": [ { "gameSetting": "fISSnowDropsSize", "configINI": "Snow:fSize", "default": 0.5 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1.25
+					}
+				},
+				"12": {
+					"title": "$DropsStatic",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$DropsStaticMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnableStaticDrops", "configINI": "Snow:bEnableStaticDrops", "default": 1 } ]
+				},
+				"14": {
+					"title": "$DropsMoving",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$DropsMovingMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnableMovingDrops", "configINI": "Snow:bEnableMovingDrops", "default": 0 } ]
+				},
+				"16": {
+					"title": "$Fogging",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FoggingMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnableFogging", "configINI": "Snow:bEnableFogging", "default": 1 } ]
+				},
+				"18": {
+					"title": "$FogBlur",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FogBlurMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnableFogBlurring", "configINI": "Snow:bEnableFogBlurring", "default": 1 } ]
+				},
+				"20": {
+					"title": "$FogTrails",
+					"type": 5,
+					"enable": 1,
+					"mouse": "$FogTrailsMouse",
+					"vars": [ { "gameSetting": "bISSnowDropsEnableFogTrails", "configINI": "Snow:bEnableFogTrails", "default": 1 } ]
+				},
+				"22": {
+					"title": "$FogColorInfluence",
+					"type": 2.5,
+					"enable": 1,
+					"mouse": "$FogColorInfluenceMouse",
+					"vars": [ { "gameSetting": "fISSnowDropsFogColorInfluence", "configINI": "Snow:fFogColorInfluence", "default": 0.1 } ],
+					"scale": {
+						"valueDecimal": 2,
+						"valueIncrement": 0.01,
+						"valueMin": 0,
+						"valueMax": 1
+					}
+				},
+				"24": {
+					"title": "$FadeIn",
+					"type": 2,
+					"enable": 1,
+					"mouse": "$FadeInMouse",
+					"vars": [ { "gameSetting": "fISSnowDropsFadeIn", "configINI": "Snow:fFadeIn", "default": 30.0 } ],
+					"scale": {
+						"valueDecimal": 0,
+						"valueIncrement": 1,
+						"valueMin": 0,
+						"valueMax": 120
+					}
+				},
+				"26": {
+					"title": "$FadeOut",
+					"type": 2,
+					"enable": 1,
+					"mouse": "$FadeOutMouse",
+					"vars": [ { "gameSetting": "fISSnowDropsFadeOut", "configINI": "Snow:fFadeOut", "default": 5.0 } ],
+					"scale": {
+						"valueDecimal": 0,
+						"valueIncrement": 1,
+						"valueMin": 0,
+						"valueMax": 120
+					}
+				}
+			}
+		}
+	}
+}
