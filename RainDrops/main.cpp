@@ -441,7 +441,7 @@ void InitializeTextures() {
 	}
 
 	constexpr uint32_t eCrationFlags = BSTextureManager::BSTM_CF_NO_DEPTH | BSTextureManager::BSTM_CF_NO_STENCIL;
-	D3DFORMAT eFormat = BSShaderManager::bIsHDR ? D3DFMT_A16B16G16R16F : D3DFMT_A8R8G8B8;
+	constexpr D3DFORMAT eFormat = D3DFMT_X8R8G8B8;
 	spBlurBufferRT = BSShaderManager::GetTextureManager()->CreateRenderedTexture(NiDX9Renderer::GetSingleton(), uiScreenWidth / 2, uiScreenHeight / 2, eCrationFlags, eFormat, D3DFMT_UNKNOWN, BSTextureManager::BSTM_RT_CUSTOM, D3DMULTISAMPLE_NONE, nullptr, 0);
 	if (spBlurBufferRT)
 		spBlurBufferRT->GetTexture(0)->SetName("RainBlur");
