@@ -9,6 +9,7 @@ class NiDepthStencilBuffer;
 class NiObject;
 class NiCamera;
 class BSRenderedTexture;
+class NiRenderedTexture;
 
 /*
 Stores and manages rendered textures. 
@@ -116,6 +117,8 @@ public:
 	NiPointer<NiObject>						spUnk0AC;
 
 	static constexpr AddressPtr<uint32_t, 0x11A9608> uiMaxAnisotropy;
+
+	BSRenderedTexture* CreateRenderedTexture(NiDX9Renderer* apRenderer, uint32_t auiWidth, uint32_t auiHeight, uint32_t auiFlags, D3DFORMAT aeFormat, D3DFORMAT aeEDRAMFormat, eTextureType aeType, D3DMULTISAMPLE_TYPE aeMSAAType, NiRenderedTexture* apAliasTex, uint32_t auiAliasOffset);
 
 	BSRenderedTexture* BorrowRenderedTexture(NiDX9Renderer* apRenderer, eTextureType aeType, uint32_t auiFlags = 0, uint32_t unk = 0, uint32_t auiBackgroundColor = 0);
 	void ReturnRenderedTexture(BSRenderedTexture* apRenderedTexture);

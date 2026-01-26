@@ -868,6 +868,7 @@ public:
 		BSSM_RENDER_SILHOUETTE		= 15,	// Everything is black except for grass, sky and emissives
 	};
 
+	static constexpr AddressPtr<bool, 0x11F941E> bIsHDR;
 	static constexpr AddressPtr<bool, 0x11F9426> bLetterBox;
 	static constexpr AddressPtr<bool, 0x11F9427> bIsInInterior;
 

@@ -440,20 +440,11 @@ void InitializeTextures() {
 		uiScreenHeight = pRenderer->GetScreenHeight();
 	}
 
-	bool bPrevUseCustomFormat = BSRenderedTexture::bUseCustomFormat;
-	bool bPrevIsRT = BSRenderedTexture::bIsRenderTarget;
-	D3DFORMAT kPrevFormat = BSRenderedTexture::eFormat;
-
-	NiTexture::FormatPrefs kTextureFormat(NiTexture::FormatPrefs::FLOAT_COLOR_32, NiTexture::FormatPrefs::ALPHA_DEFAULT, NiTexture::FormatPrefs::NO);
-	BSRenderedTexture::bUseCustomFormat = true;
-	BSRenderedTexture::bIsRenderTarget = true;
-	BSRenderedTexture::eFormat = D3DFMT_A8B8G8R8;
-
-	spBlurBufferRT = BSRenderedTexture::CreateTexture("RainBlur", uiScreenWidth / 2, uiScreenHeight / 2, kTextureFormat, Ni2DBuffer::MULTISAMPLE_NONE, false, nullptr, 0, 0);
-
-	BSRenderedTexture::bUseCustomFormat = bPrevUseCustomFormat;
-	BSRenderedTexture::bIsRenderTarget = bPrevIsRT;
-	BSRenderedTexture::eFormat = kPrevFormat;
+	constexpr uint32_t eCrationFlags = BSTextureManager::BSTM_CF_NO_DEPTH | BSTextureManager::BSTM_CF_NO_STENCIL;
+	D3DFORMAT eFormat = BSShaderManager::bIsHDR ? D3DFMT_A16B16G16R16F : D3DFMT_A8R8G8B8;
+	spBlurBufferRT = BSShaderManager::GetTextureManager()->CreateRenderedTexture(NiDX9Renderer::GetSingleton(), uiScreenWidth / 2, uiScreenHeight / 2, eCrationFlags, eFormat, D3DFMT_UNKNOWN, BSTextureManager::BSTM_RT_CUSTOM, D3DMULTISAMPLE_NONE, nullptr, 0);
+	if (spBlurBufferRT)
+		spBlurBufferRT->GetTexture(0)->SetName("RainBlur");
 }
 
 void InitializeShaders() {
