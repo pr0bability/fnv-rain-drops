@@ -20,6 +20,8 @@ public:
 	NiAVObject* Get3D(bool abFirstPerson) const;
 
 	CFilter GetCollisionFilter() const;
+
+	float GetLooking() const;
 };
 
 ASSERT_SIZE(PlayerCharacter, 0xE50);

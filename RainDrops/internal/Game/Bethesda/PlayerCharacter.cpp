@@ -16,3 +16,7 @@ NiAVObject* PlayerCharacter::Get3D(bool abFirstPerson) const {
 CFilter PlayerCharacter::GetCollisionFilter() const {
 	return ThisCall<CFilter>(0x931ED0, this);
 }
+
+float PlayerCharacter::GetLooking() const {
+	return ThisCall<float>(0x931D70, this);
+}

@@ -362,7 +362,15 @@ public:
 			fFogStrength = fRainAmount;
 		}
 
-		float fDensity = kSettings.fDensity.Float() * kRainDropSettingOverrides.fDensityMultiplier.Float();
+		static constexpr float fFullPitch = 20.0f * (M_PI / 180.0f);
+		static constexpr float fEmptyPitch = -88.0f * (M_PI / 180.0f);
+
+		float fPitchRad = -PlayerCharacter::GetSingleton()->GetLooking();
+		float fClamped = std::clamp(fPitchRad, fEmptyPitch, fFullPitch);
+		float t = (fClamped - fEmptyPitch) / (fFullPitch - fEmptyPitch);
+		float fDensity = t * t * (3.0f - 2.0f * t);
+
+		fDensity *= kSettings.fDensity.Float() * kRainDropSettingOverrides.fDensityMultiplier.Float();
 
 		ImageSpaceShaderParam* pRainDropsParam = static_cast<ImageSpaceShaderParam*>(kEffectParams.GetAt(2));
 		pRainDropsParam->SetPixelConstants(1, fTimer, fStaticScale, fMoving1Scale, fMoving2Scale);
