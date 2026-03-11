@@ -68,7 +68,14 @@ struct RainDropSettings {
 	CustomGameSetting	fFadeOut;
 };
 
+struct SettingOverrides {
+	CustomGameSetting   bEnabledOverride;
+	CustomGameSetting	bEnableFoggingOverride;
+	CustomGameSetting	fDensityMultiplier;
+};
+
 static RainDropSettings	kRainDropSettings[2];
+static SettingOverrides	kRainDropSettingOverrides;
 
 static BSRenderedTexturePtr spBlurBufferRT = nullptr;
 
@@ -210,7 +217,7 @@ public:
 		int iStart = 0;
 		int iEnd = 3;
 
-		if (!kSettings.bEnableFogBlurring.Bool()) {
+		if (!kSettings.bEnableFogBlurring.Bool() || !kRainDropSettingOverrides.bEnableFoggingOverride.Bool()) {
 			iStart = 3;
 			iEnd = 4;
 		}
@@ -293,13 +300,18 @@ public:
 
 		bool bIsRaining = pSky->GetIsRaining();
 		bool bIsSnowing = pSky->GetIsSnowing();
+		bool bIsWet = bIsRaining || bIsSnowing;
 
-		if ((bIsRaining && !kRainDropSettings[0].bEnabled.Bool()) || (bIsSnowing && !kRainDropSettings[1].bEnabled.Bool())) {
+		RainDropSettings kSettings = kRainDropSettings[bIsSnowing ? 1 : 0];
+		
+		bool bEnabled = kSettings.bEnabled.Bool() && kRainDropSettingOverrides.bEnabledOverride.Bool();
+
+		if (bIsWet && !bEnabled) {
 			Stop();
 			return false;
 		}
 
-		if (kRainDropSettings[bIsSnowing ? 1 : 0].b1stPersonOnly.Bool() && PlayerCharacter::GetSingleton()->Is3rdPerson()) {
+		if (kSettings.b1stPersonOnly.Bool() && PlayerCharacter::GetSingleton()->Is3rdPerson()) {
 			Stop();
 			return false;
 		}
@@ -358,9 +370,11 @@ public:
 			fFogStrength = fRainAmount;
 		}
 
+		float fDensity = kSettings.fDensity.Float() * kRainDropSettingOverrides.fDensityMultiplier.Float();
+
 		ImageSpaceShaderParam* pRainDropsParam = static_cast<ImageSpaceShaderParam*>(kEffectParams.GetAt(2));
 		pRainDropsParam->SetPixelConstants(1, fTimer, fStaticScale, fMoving1Scale, fMoving2Scale);
-		pRainDropsParam->SetPixelConstants(2, kSettings.fDensity.Float(), kSettings.fSize.Float(), kSettings.bEnableStaticDrops.Bool(), kSettings.bEnableMovingDrops.Bool());
+		pRainDropsParam->SetPixelConstants(2, fDensity, kSettings.fSize.Float(), kSettings.bEnableStaticDrops.Bool(), kSettings.bEnableMovingDrops.Bool());
 		pRainDropsParam->SetPixelConstants(3, kSettings.bEnableFogging.Bool(), kSettings.bEnableFogTrails.Bool(), kSettings.fFogColorInfluence.Float(), 0.0f);
 		pRainDropsParam->SetPixelConstants(4, kFogColor.r, kFogColor.g, kFogColor.b, fFogStrength);
 
@@ -424,6 +438,10 @@ void LoadSettings() {
 	kRainDropSettings[1].fFogColorInfluence.Initialize("fISSnowDropsFogColorInfluence", static_cast<float>(kIni.GetDoubleValue("Snow", "fFogColorInfluence", 0.1f)));
 	kRainDropSettings[1].fFadeIn.Initialize("fISSnowDropsFadeIn", static_cast<float>(kIni.GetDoubleValue("Snow", "fFadeIn", 30.0f)));
 	kRainDropSettings[1].fFadeOut.Initialize("fISSnowDropsFadeOut", static_cast<float>(kIni.GetDoubleValue("Snow", "fFadeOut", 5.0f)));
+
+	kRainDropSettingOverrides.bEnabledOverride.Initialize("bISDropsEnabledOverride", true);
+	kRainDropSettingOverrides.bEnableFoggingOverride.Initialize("bISDropsEnableFoggingOverride", true);
+	kRainDropSettingOverrides.fDensityMultiplier.Initialize("fISDropsDensityMultiplier", 1.0f);
 }
 
 void InitializeTextures() {
