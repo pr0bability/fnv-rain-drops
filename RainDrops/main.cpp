@@ -1,15 +1,18 @@
 #include "Bethesda/BSMemory.hpp"
 #include "Bethesda/BSShader.hpp"
+
 #include "Bethesda/BSShaderManager.hpp"
 #include "Bethesda/ImageSpaceManager.hpp"
 #include "Bethesda/ImageSpaceEffect.hpp"
 #include "Bethesda/ImageSpaceShader.hpp"
 #include "Bethesda/ImageSpaceShaderParam.hpp"
+#include "Bethesda/PlayerCharacter.hpp"
 #include "Bethesda/ShadowSceneNode.hpp"
 #include "Bethesda/Sky.hpp"
 #include "Bethesda/TESMain.hpp"
 #include "Bethesda/TimeGlobal.hpp"
 #include "Gamebryo/NiDX9Renderer.hpp"
+#include "RainRaycast/RainRaycast.hpp"
 #include "Misc/CustomGameSetting.hpp"
 
 #include "nvse/PluginAPI.h"
@@ -82,17 +85,6 @@ static BSRenderedTexturePtr spBlurBufferRT = nullptr;
 static ImageSpaceShader* pShaderRainBlur = nullptr;
 static ImageSpaceShader* pShaderRainDropsBlur = nullptr;
 static ImageSpaceShader* pShaderRainDrops = nullptr;
-
-class PlayerCharacter {
-public:
-	static PlayerCharacter* GetSingleton() {
-		return *reinterpret_cast<PlayerCharacter**>(0x011DEA3C);
-	}
-
-	bool Is3rdPerson() {
-		return ThisCall<bool>(0x4EAF60, this);
-	}
-};
 
 template<const char* sName, uint32_t uiTextures>
 class ImageSpaceShaderTemplate : public ImageSpaceShader {
@@ -316,7 +308,7 @@ public:
 			return false;
 		}
 
-		bool bNewStatus = (bIsRaining || bIsSnowing) && !BSShaderManager::bIsInInterior;
+		bool bNewStatus = (bIsRaining || bIsSnowing) && !BSShaderManager::bIsInInterior && !RainRaycast::bHit;
 
 		if (bStatus) {
 			if (!bNewStatus && !bStopping) {
@@ -497,9 +489,15 @@ void MessageHandler(NVSEMessagingInterface::Message* msg) {
 		InitializeTextures();
 		InitializeShaders();
 
+		RainRaycast::Initialize();
+
 		break;
 	case NVSEMessagingInterface::kMessage_PostLoadGame:
 		pEffectRainDrops->Stop();
+
+		break;
+	case NVSEMessagingInterface::kMessage_MainGameLoop:
+		RainRaycast::StartThread();
 
 		break;
 	}

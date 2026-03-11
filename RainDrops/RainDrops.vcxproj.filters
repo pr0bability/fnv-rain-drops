@@ -34,6 +34,12 @@
     <Filter Include="external\simpleini">
       <UniqueIdentifier>{cc4becf9-e8d3-4c16-b6d3-0ea7f8f50ca0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="internal\Game\Havok">
+      <UniqueIdentifier>{974f2879-b1ae-4c9f-b5f4-c3f13a21b1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal\RainRaycast">
+      <UniqueIdentifier>{a1fcb348-3ba5-4e44-9d13-6b961170b7bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -147,6 +153,51 @@
     </ClCompile>
     <ClCompile Include="internal\Game\Bethesda\BSShader.cpp">
       <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\bhkThreadMemoryRouter.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\PlayerCharacter.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\TES.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\TESObjectCELL.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpClosestRayHitCollector.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpRayHitCollector.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpShapeRayCastCollectorOutput.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpShapeRayCastOutput.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpWorldRayCastOutput.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\bhkPickData.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkpWorldRayCastInput.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Havok\hkVector4.cpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Game\Bethesda\bhkUtilFunctions.cpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Utils\DirectXUtils.cpp">
+      <Filter>shared\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\RainRaycast\RainRaycast.cpp">
+      <Filter>internal\RainRaycast</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -677,6 +728,87 @@
     </ClInclude>
     <ClInclude Include="internal\Game\Bethesda\TimeGlobal.hpp">
       <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkShape.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkThreadMemoryRouter.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkWorld.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\CFilter.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\PlayerCharacter.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\TES.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\TESObjectCELL.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpClosestRayHitCollector.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpRayHitCollector.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpShapeRayCastCollectorOutput.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkVector4.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkSimdReal.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpShapeRayCastOutput.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpWorldRayCastOutput.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkSerializable.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkRefObject.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkReferencedObject.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkBaseObject.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkWorldObject.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkSerializableCinfo.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkMemoryRouter.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkPickData.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Havok\hkpWorldRayCastInput.hpp">
+      <Filter>internal\Game\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Game\Bethesda\bhkUtilFunctions.hpp">
+      <Filter>internal\Game\Bethesda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Utils\DirectXUtils.hpp">
+      <Filter>shared\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Utils\StackObject.hpp">
+      <Filter>shared\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\RainRaycast\RainRaycast.hpp">
+      <Filter>internal\RainRaycast</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,3 +8,8 @@ SceneGraph* TESMain::GetWorldSceneGraph() {
 	return *reinterpret_cast<SceneGraph**>(0x11DEB7C);
 }
 
+NiCamera* TESMain::GetWorldRootCamera() {
+	return GetWorldSceneGraph()->spCamera.m_pObject;
+}
+
+

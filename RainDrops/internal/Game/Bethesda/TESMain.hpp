@@ -40,6 +40,7 @@ public:
 	NiCameraPtr				spFirstPersonCamera;
 
 	static constexpr AddressPtr<NiDX9RendererPtr, 0x11C73B4> spRenderer;
+	static constexpr AddressPtr<int32_t, 0x11A2FE0> iFrameCounter;
 	static constexpr AddressPtr<float, 0x11C3C08> fCellAppTime;
 	static constexpr AddressPtr<float, 0x11DEA30> fFrameAnimTime;
 
@@ -47,6 +48,7 @@ public:
 
 	static TESMain* GetSingleton();
 	static SceneGraph* GetWorldSceneGraph();
+	static NiCamera* GetWorldRootCamera();
 };
 
 ASSERT_SIZE(TESMain, 0xA4);
