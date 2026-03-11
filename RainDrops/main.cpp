@@ -556,7 +556,7 @@ void ShaderLoaderMessageHandler(NVSEMessagingInterface::Message* apMessage) {
 EXTERN_DLL_EXPORT bool NVSEPlugin_Query(const NVSEInterface* nvse, PluginInfo* info) {
 	info->infoVersion = PluginInfo::kInfoVersion;
 	info->name = "Rain Drops";
-	info->version = 100;
+	info->version = 110;
 
 	return !nvse->isEditor;
 }
