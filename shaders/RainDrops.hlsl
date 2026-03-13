@@ -56,6 +56,7 @@ float4 ScreenData : register(c0);
 float4 RainData : register(c1);
 float4 RainSettings[2] : register(c2);
 float4 FogData : register(c4);
+float2 UVOffset : register(c5);
 
 static const float2 InvResolution = ScreenData.xy;
 static const float2 Resolution = ScreenData.zw;
@@ -201,7 +202,7 @@ float Fog(float2 uv) {
 PixelOutput Main(PixelInput input) {
     PixelOutput output;
     
-    float2 coord = (input.screenPos.xy - 0.5f * Resolution.xy) * InvResolution.y;
+    float2 coord = (input.screenPos.xy - 0.5f * Resolution.xy) * InvResolution.y + UVOffset.xy;
     
     float t = Time * 0.2f;
     

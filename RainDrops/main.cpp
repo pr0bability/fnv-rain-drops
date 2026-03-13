@@ -75,6 +75,8 @@ struct SettingOverrides {
 	CustomGameSetting   bEnabledOverride;
 	CustomGameSetting	bEnableFoggingOverride;
 	CustomGameSetting	fDensityMultiplier;
+	CustomGameSetting	fXOffset;
+	CustomGameSetting	fYOffset;
 };
 
 static RainDropSettings	kRainDropSettings[2];
@@ -257,7 +259,7 @@ public:
 
 		// Generate rain drops with blur.
 		ImageSpaceShaderParam* pRainDropsParam = ImageSpaceShaderParam::CreateObject();
-		pRainDropsParam->ResizeConstantGroup(0, 5);
+		pRainDropsParam->ResizeConstantGroup(0, 6);
 		pRainDropsParam->SetPixelConstants(0, fTexelWidth, fTexelHeight, uiScreenWidth, uiScreenHeight);
 		SetEffect(2, pShaderRainDropsBlur, pRainDropsParam, 0);
 		SetEffectInputs(2, 1, 2, NiTexturingProperty::FILTER_BILERP, NiTexturingProperty::FILTER_BILERP);
@@ -377,6 +379,7 @@ public:
 		pRainDropsParam->SetPixelConstants(2, fDensity, kSettings.fSize.Float(), kSettings.bEnableStaticDrops.Bool(), kSettings.bEnableMovingDrops.Bool());
 		pRainDropsParam->SetPixelConstants(3, kSettings.bEnableFogging.Bool(), kSettings.bEnableFogTrails.Bool(), kSettings.fFogColorInfluence.Float(), 0.0f);
 		pRainDropsParam->SetPixelConstants(4, kFogColor.r, kFogColor.g, kFogColor.b, fFogStrength);
+		pRainDropsParam->SetPixelConstants(5, kRainDropSettingOverrides.fXOffset.Float(), kRainDropSettingOverrides.fYOffset.Float(), 0.0f, 0.0f);
 
 		if (bStopping && fRainAmount < 0.01f)
 			Stop();
@@ -442,6 +445,8 @@ void LoadSettings() {
 	kRainDropSettingOverrides.bEnabledOverride.Initialize("bISDropsEnabledOverride", true);
 	kRainDropSettingOverrides.bEnableFoggingOverride.Initialize("bISDropsEnableFoggingOverride", true);
 	kRainDropSettingOverrides.fDensityMultiplier.Initialize("fISDropsDensityMultiplier", 1.0f);
+	kRainDropSettingOverrides.fXOffset.Initialize("fISDropsXOffset", 0.0f);
+	kRainDropSettingOverrides.fYOffset.Initialize("fISDropsYOffset", 0.0f);
 }
 
 void InitializeTextures() {
