@@ -72,9 +72,12 @@ struct RainDropSettings {
 };
 
 struct SettingOverrides {
-	CustomGameSetting   bEnabledOverride;
-	CustomGameSetting	bEnableFoggingOverride;
+	CustomGameSetting   bEnabled;
+	CustomGameSetting	bEnableStaticDrops;
+	CustomGameSetting	bEnableMovingDrops;
+	CustomGameSetting	bEnableFogging;
 	CustomGameSetting	fDensityMultiplier;
+	CustomGameSetting	fMovingDensityMultiplier;
 	CustomGameSetting	fXOffset;
 	CustomGameSetting	fYOffset;
 };
@@ -211,7 +214,7 @@ public:
 		int iStart = 0;
 		int iEnd = 3;
 
-		if (!kSettings.bEnableFogBlurring.Bool() || !kRainDropSettingOverrides.bEnableFoggingOverride.Bool()) {
+		if (!kSettings.bEnableFogBlurring.Bool() || !kRainDropSettingOverrides.bEnableFogging.Bool()) {
 			iStart = 3;
 			iEnd = 4;
 		}
@@ -298,7 +301,7 @@ public:
 
 		RainDropSettings kSettings = kRainDropSettings[bIsSnowing ? 1 : 0];
 		
-		bool bEnabled = kSettings.bEnabled.Bool() && kRainDropSettingOverrides.bEnabledOverride.Bool();
+		bool bEnabled = kSettings.bEnabled.Bool() && kRainDropSettingOverrides.bEnabled.Bool();
 
 		if (bIsWet && !bEnabled) {
 			Stop();
@@ -364,22 +367,43 @@ public:
 			fFogStrength = fRainAmount;
 		}
 
-		static constexpr float fFullPitch = 20.0f * (M_PI / 180.0f);
-		static constexpr float fEmptyPitch = -88.0f * (M_PI / 180.0f);
+		float fDensity, fMovingDensity;
 
 		float fPitchRad = -PlayerCharacter::GetSingleton()->GetLooking();
-		float fClamped = std::clamp(fPitchRad, fEmptyPitch, fFullPitch);
-		float t = (fClamped - fEmptyPitch) / (fFullPitch - fEmptyPitch);
-		float fDensity = t * t * (3.0f - 2.0f * t);
+
+		// Static drop density.
+		{
+			static constexpr float fFullPitch = 20.0f * (M_PI / 180.0f);
+			static constexpr float fEmptyPitch = -88.0f * (M_PI / 180.0f);
+
+			float fClamped = std::clamp(fPitchRad, fEmptyPitch, fFullPitch);
+			float t = (fClamped - fEmptyPitch) / (fFullPitch - fEmptyPitch);
+			fDensity = t * t * (3.0f - 2.0f * t);
+		}
+		
+		// Moving drop density.
+		{
+			static constexpr float fEmptyPitch = 70.0f * (M_PI / 180.0f);
+			static constexpr float fFullPitch = 20.0f * (M_PI / 180.0f);
+			
+			float fClamped = std::clamp(fPitchRad, fFullPitch, fEmptyPitch);
+			float t = 1.0f - (fClamped - fFullPitch) / (fEmptyPitch - fFullPitch);
+			fMovingDensity = t * t * (3.0f - 2.0f * t);
+		}
 
 		fDensity *= kSettings.fDensity.Float() * kRainDropSettingOverrides.fDensityMultiplier.Float();
+		fMovingDensity *= fDensity * kRainDropSettingOverrides.fMovingDensityMultiplier.Float();
+
+		bool bEnableStaticDrops = kSettings.bEnableStaticDrops.Bool() && kRainDropSettingOverrides.bEnableStaticDrops.Bool();
+		bool bEnableMovingDrops = kSettings.bEnableMovingDrops.Bool() && kRainDropSettingOverrides.bEnableMovingDrops.Bool();
+		bool bEnableFogging = kSettings.bEnableFogging.Bool() && kRainDropSettingOverrides.bEnableFogging.Bool();
 
 		ImageSpaceShaderParam* pRainDropsParam = static_cast<ImageSpaceShaderParam*>(kEffectParams.GetAt(2));
 		pRainDropsParam->SetPixelConstants(1, fTimer, fStaticScale, fMoving1Scale, fMoving2Scale);
-		pRainDropsParam->SetPixelConstants(2, fDensity, kSettings.fSize.Float(), kSettings.bEnableStaticDrops.Bool(), kSettings.bEnableMovingDrops.Bool());
-		pRainDropsParam->SetPixelConstants(3, kSettings.bEnableFogging.Bool(), kSettings.bEnableFogTrails.Bool(), kSettings.fFogColorInfluence.Float(), 0.0f);
-		pRainDropsParam->SetPixelConstants(4, kFogColor.r, kFogColor.g, kFogColor.b, fFogStrength);
-		pRainDropsParam->SetPixelConstants(5, kRainDropSettingOverrides.fXOffset.Float(), kRainDropSettingOverrides.fYOffset.Float(), 0.0f, 0.0f);
+		pRainDropsParam->SetPixelConstants(2, fDensity, fMovingDensity, bEnableStaticDrops, bEnableMovingDrops);
+		pRainDropsParam->SetPixelConstants(3, kSettings.fSize.Float(), kRainDropSettingOverrides.fXOffset.Float(), kRainDropSettingOverrides.fYOffset.Float(), 0.0f);
+		pRainDropsParam->SetPixelConstants(4, bEnableFogging, kSettings.bEnableFogTrails.Bool(), kSettings.fFogColorInfluence.Float(), 0.0f);
+		pRainDropsParam->SetPixelConstants(5, kFogColor.r, kFogColor.g, kFogColor.b, fFogStrength);
 
 		if (bStopping && fRainAmount < 0.01f)
 			Stop();
@@ -442,9 +466,12 @@ void LoadSettings() {
 	kRainDropSettings[1].fFadeIn.Initialize("fISSnowDropsFadeIn", static_cast<float>(kIni.GetDoubleValue("Snow", "fFadeIn", 30.0f)));
 	kRainDropSettings[1].fFadeOut.Initialize("fISSnowDropsFadeOut", static_cast<float>(kIni.GetDoubleValue("Snow", "fFadeOut", 5.0f)));
 
-	kRainDropSettingOverrides.bEnabledOverride.Initialize("bISDropsEnabledOverride", true);
-	kRainDropSettingOverrides.bEnableFoggingOverride.Initialize("bISDropsEnableFoggingOverride", true);
+	kRainDropSettingOverrides.bEnabled.Initialize("bISDropsEnabledOverride", true);
+	kRainDropSettingOverrides.bEnableStaticDrops.Initialize("bISDropsEnableStaticDropsOverride", true);
+	kRainDropSettingOverrides.bEnableMovingDrops.Initialize("bISDropsEnableMovingDropsOverride", true);
+	kRainDropSettingOverrides.bEnableFogging.Initialize("bISDropsEnableFoggingOverride", true);
 	kRainDropSettingOverrides.fDensityMultiplier.Initialize("fISDropsDensityMultiplier", 1.0f);
+	kRainDropSettingOverrides.fMovingDensityMultiplier.Initialize("fISDropsMovingDensityMultiplier", 1.0f);
 	kRainDropSettingOverrides.fXOffset.Initialize("fISDropsXOffset", 0.0f);
 	kRainDropSettingOverrides.fYOffset.Initialize("fISDropsYOffset", 0.0f);
 }

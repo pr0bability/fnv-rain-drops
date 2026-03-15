@@ -54,9 +54,8 @@ sampler2D RenderedBuffer : register(s0);
 
 float4 ScreenData : register(c0);
 float4 RainData : register(c1);
-float4 RainSettings[2] : register(c2);
-float4 FogData : register(c4);
-float2 UVOffset : register(c5);
+float4 RainSettings[3] : register(c2);
+float4 FogData : register(c5);
 
 static const float2 InvResolution = ScreenData.xy;
 static const float2 Resolution = ScreenData.zw;
@@ -65,12 +64,14 @@ static const float StaticScale = RainData.y;
 static const float Moving1Scale = RainData.z;
 static const float Moving2Scale = RainData.w;
 static const float Density = RainSettings[0].x;
-static const float Size = RainSettings[0].y;
+static const float MovingDensity = RainSettings[0].y;
 static const float EnableStatic = RainSettings[0].z;
 static const float EnableMoving = RainSettings[0].w;
-static const float EnableFog = RainSettings[1].x;
-static const float EnableFogTrails = RainSettings[1].y;
-static const float FogColorInfluence = RainSettings[1].z;
+static const float Size = RainSettings[1].x;
+static const float2 UVOffset = RainSettings[1].yz;
+static const float EnableFog = RainSettings[2].x;
+static const float EnableFogTrails = RainSettings[2].y;
+static const float FogColorInfluence = RainSettings[2].z;
 static const float3 FogColor = FogData.xyz;
 static const float FogStrength = FogData.a;
 
@@ -133,7 +134,7 @@ float2 MovingDrops(float2 coord, float t) {
     id = floor(coord * grid);
     float3 rand = Random3D(id.x * 35.2f + id.y * 2376.1f);
     
-    if (rand.z > Density)
+    if (rand.z > MovingDensity)
         return float2(0.0f, 0.0f);
     
     float2 st = frac(coord * grid) - float2(0.5f, 0.0f);
